@@ -1,5 +1,6 @@
 <?php /*
-  * Plugin Name:       WP Booking
+  * Plugin Name:    WP Booking
+  * Author:         KlintDev | Marius Klint Hansen
   */
 
 namespace KlintDev\WPBooking;
