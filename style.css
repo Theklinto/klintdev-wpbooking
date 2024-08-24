@@ -1,0 +1,41 @@
+/* Needs to be after bootstrap */
+.hidden {
+    display: none;
+}
+
+.loading-overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-check-input:checked {
+    background-color: transparent;
+}
+
+.form-check:has(> .form-check-input) {
+    display: flex;
+    align-items: center;
+}
+
+input[type="checkbox"] {
+    margin: 0 .25em 0 0;
+}
+
+.ui-sortable > div {
+    float: left;
+}
+
+.remove-image-btn {
+    top: 0;
+    right: 0;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    position: absolute;
+}
