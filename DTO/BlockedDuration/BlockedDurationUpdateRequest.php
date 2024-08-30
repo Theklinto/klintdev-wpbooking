@@ -48,14 +48,4 @@ class BlockedDurationUpdateRequest extends DTOBase {
             1000
         );
     }
-
-    public static function createDTO(): object
-    {
-        return self::baseCreateDTO(self::class);
-    }
-
-    public static function dtoFromArray(array $array): object
-    {
-        return self::baseDTOFromArray(self::class, $array);
-    }
 }

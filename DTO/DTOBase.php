@@ -16,179 +16,139 @@ use WP_REST_Request;
  * @template TTarget
  */
 #[AllowDynamicProperties]
-abstract class DTOBase
-{
-    abstract public static function createDTO(): object;
+abstract class DTOBase {
+	/**
+	 * @return TTarget
+	 * @throws ReflectionException
+	 */
+	public static function createDTO(): static {
 
-    /**
-     * @param string $dtoClass
-     * @return TTarget
-     * @throws ReflectionException
-     */
-    protected static function baseCreateDTO(string $dtoClass): object
-    {
-        $class = new ReflectionClass($dtoClass);
-        /** @var $object object */
-        $object = $class->newInstanceWithoutConstructor();
-        /** @var $constants array<string, string> */
-        $constants = $class->getconstants();
-        foreach ($constants as $key => $value) {
-            $constant = new ReflectionClassConstant($dtoClass, $key);
-            $attributes = $constant->getAttributes(DTOPropertyAttribute::class);
-            if (isset($attributes[0])) {
-                /** @var $attribute DTOPropertyAttribute */
-                $attribute = $attributes[0]->newInstance();
-                $object->{$attribute->PropertyName} = $attribute->DefaultValue;
-            }
-        }
+		$class = new ReflectionClass( static::class );
+		/** @var $object object */
+		$object = $class->newInstanceWithoutConstructor();
+		/** @var $constants array<string, string> */
+		$constants = $class->getconstants();
+		foreach ( $constants as $key => $value ) {
+			$constant   = new ReflectionClassConstant( static::class, $key );
+			$attributes = $constant->getAttributes( DTOPropertyAttribute::class );
+			if ( isset( $attributes[0] ) ) {
+				/** @var $attribute DTOPropertyAttribute */
+				$attribute                          = $attributes[0]->newInstance();
+				$object->{$attribute->PropertyName} = $attribute->DefaultValue;
+			}
+		}
 
-        return $object;
-    }
+		return $object;
+	}
 
-    /**
-     * @throws ReflectionException
-     */
-    public static function assignPropertyValue(object $target, string $propertyName, mixed $propertyValue): bool
-    {
-        $className = get_class($target);
-        $class = new ReflectionClass($target::class);
-        /** @var $constants string[] */
-        $constants = $class->getconstants();
+	/**
+	 * @throws ReflectionException
+	 */
+	public static function assignPropertyValue( object $target, string $propertyName, mixed $propertyValue ): bool {
+		$className = get_class( $target );
+		$class     = new ReflectionClass( $target::class );
+		/** @var $constants string[] */
+		$constants = $class->getconstants();
 
-        /** @var $attribute DTOPropertyAttribute|null */
-        $attribute = null;
-        foreach ($constants as $key => $value) {
-            $reflectionConstant = new ReflectionClassConstant($className, $key);
-            $attributes = $reflectionConstant->getAttributes(DTOPropertyAttribute::class);
-            if (!isset($attributes[0])) {
-                continue;
-            }
+		/** @var $attribute DTOPropertyAttribute|null */
+		$attribute = null;
+		foreach ( $constants as $key => $value ) {
+			$reflectionConstant = new ReflectionClassConstant( $className, $key );
+			$attributes         = $reflectionConstant->getAttributes( DTOPropertyAttribute::class );
+			if ( ! isset( $attributes[0] ) ) {
+				continue;
+			}
 
-            $foundAttribute = $attributes[0]->newInstance();
-            if ($foundAttribute->PropertyName === $propertyName) {
-                $attribute = $foundAttribute;
-                break;
-            }
-        }
+			$foundAttribute = $attributes[0]->newInstance();
+			if ( $foundAttribute->PropertyName === $propertyName ) {
+				$attribute = $foundAttribute;
+				break;
+			}
+		}
 
-        if ($attribute === null) {
-            throw new InvalidArgumentException("No DTOPropertyAttribute constant found for $propertyName on $className");
-        }
+		if ( $attribute === null ) {
+			throw new InvalidArgumentException( "No DTOPropertyAttribute constant found for $propertyName on $className" );
+		}
 
-        if ($attribute->Nullable && $propertyValue === null) {
-            $target->{$propertyName} = null;
-            return true;
-        }
+		if ( $attribute->Nullable && $propertyValue === null ) {
+			$target->{$propertyName} = null;
 
-        switch ($attribute->PropertyType) {
-            case DTOPropertyType::Bool:
-            {
-                if ($propertyValue === "true" || $propertyValue === "1") {
-                    $target->{$propertyName} = true;
-                } elseif ($propertyValue === "false" || $propertyValue === "0") {
-                    $target->{$propertyName} = false;
-                } elseif (is_bool($propertyValue)) {
-                    $target->{$propertyName} = $propertyValue;
-                } else {
-                    throw new InvalidArgumentException("Property value $propertyValue is not a boolean value");
-                }
-                return true;
-            }
-            case DTOPropertyType::Int:
-            {
-                if (!is_numeric($propertyValue)) {
-                    throw new InvalidArgumentException("Property value $propertyValue is not an integer value");
-                }
-                $target->{$propertyName} = (int)$propertyValue;
-                return true;
-            }
-            case DTOPropertyType::Float:
-            {
-                if (!is_float($propertyValue)) {
-                    throw new InvalidArgumentException("Property value $propertyValue is not a float");
-                }
-                $target->{$propertyName} = $propertyValue;
-                return true;
-            }
-            case DTOPropertyType::String:
-            {
-                $target->{$propertyName} = (string)$propertyValue;
-                return true;
-            }
-            case DTOPropertyType::Array:
-            {
-                if (!is_array($propertyValue)) {
-                    throw new InvalidArgumentException("Property value $propertyValue is not an array");
-                }
-                $target->{$propertyName} = $propertyValue;
-                return true;
-            }
-        }
-        throw new InvalidArgumentException("Property value of type $propertyValue is not a valid property value");
-    }
+			return true;
+		}
 
-    /**
-     * @param array<string, string|bool|int|null> $array
-     * @return object
-     */
-    abstract public static function dtoFromArray(array $array): object;
+		switch ( $attribute->PropertyType ) {
+			case DTOPropertyType::Bool:
+			{
+				if ( $propertyValue === "true" || $propertyValue === "1" ) {
+					$target->{$propertyName} = true;
+				} elseif ( $propertyValue === "false" || $propertyValue === "0" ) {
+					$target->{$propertyName} = false;
+				} elseif ( is_bool( $propertyValue ) ) {
+					$target->{$propertyName} = $propertyValue;
+				} else {
+					throw new InvalidArgumentException( "Property value for $propertyName is not a boolean value" );
+				}
 
-    /**
-     * @param string $targetClass
-     * @param array<string, string|bool|int|null> $array
-     * @return TTarget
-     * @throws ReflectionException
-     */
-    protected static function baseDTOFromArray(string $targetClass, array $array): object
-    {
-        /** @var $object TTarget */
-        $object = new $targetClass();
-        foreach ($array as $property => $value) {
-            self::assignPropertyValue($object, $property, $value);
-        }
+				return true;
+			}
+			case DTOPropertyType::Int:
+			{
+				if ( ! is_numeric( $propertyValue ) ) {
+					throw new InvalidArgumentException( "Property value for $propertyName is not an integer value" );
+				}
+				$target->{$propertyName} = (int) $propertyValue;
 
-        return $object;
-    }
+				return true;
+			}
+			case DTOPropertyType::Float:
+			{
+				if ( ! is_numeric( $propertyValue ) && ! is_float( $propertyValue ) ) {
+					throw new InvalidArgumentException( "Property value for $propertyName is not a float" );
+				}
+				$target->{$propertyName} = $propertyValue;
 
-    public function getPropertyValue(string $propertyName): mixed
-    {
-        if (isset($this->{$propertyName})) {
-            return $this->{$propertyName};
-        }
+				return true;
+			}
+			case DTOPropertyType::String:
+			{
+				$target->{$propertyName} = (string) $propertyValue;
 
-        return null;
-    }
+				return true;
+			}
+			case DTOPropertyType::Array:
+			{
+				if ( ! is_array( $propertyValue ) ) {
+					throw new InvalidArgumentException( "Property value for $propertyName is not an array" );
+				}
+				$target->{$propertyName} = $propertyValue;
 
-    /**
-     * @throws Exception
-     */
-    protected static function validateDate(DTOBase $target, string $propertyName, string $errorMessage): void
-    {
-        $value = $target->getPropertyValue($propertyName);
-        try {
-            if (strlen($value) == 0) {
-                throw new Exception($errorMessage);
-            }
+				return true;
+			}
+		}
+		throw new InvalidArgumentException( "Property value for $propertyName is not a valid property value" );
+	}
 
-            new DateTime($value);
-        } catch (Exception $e) {
-            throw new Exception($errorMessage);
-        }
-    }
+	/**
+	 * @param array<string, string|bool|int|null> $array
+	 *
+	 * @return TTarget
+	 * @throws ReflectionException
+	 */
+	public static function dtoFromArray( array $array ): static {
+		/** @var $object TTarget */
+		$object = new static();
+		foreach ( $array as $property => $value ) {
+			self::assignPropertyValue( $object, $property, $value );
+		}
 
-    /**
-     * @throws Exception
-     */
-    protected static function validateString(
-        DTOBase $target,
-        string  $propertyName,
-        string  $errorMessage,
-        int     $minLength,
-        int     $maxLength): void
-    {
-        $value = $target->getPropertyValue($propertyName);
-        if (strlen($value) < $minLength || strlen($value) > $maxLength) {
-            throw new Exception($errorMessage);
-        }
-    }
+		return $object;
+	}
+
+	public function getPropertyValue( string $propertyName ): mixed {
+		if ( isset( $this->{$propertyName} ) ) {
+			return $this->{$propertyName};
+		}
+
+		return null;
+	}
 }
