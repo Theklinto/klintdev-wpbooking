@@ -16,6 +16,7 @@ use KlintDev\WPBooking\Views\ContentDependency;
 use KlintDev\WPBooking\Views\ContentDependencyLoadingStyle;
 use KlintDev\WPBooking\Views\ContentDependencyType;
 use KlintDev\WPBooking\Views\PartialPage;
+use ReflectionException;
 
 class RoomEditView extends PartialPage {
 
@@ -43,6 +44,9 @@ class RoomEditView extends PartialPage {
 	protected const SORTABLE_CONTAINER_ID = self::PREFIX . "sortable-container";
 	protected const IMAGE_TEMPLATE_ID = self::PREFIX . "image-template";
 
+	/**
+	 * @throws ReflectionException
+	 */
 	public static function render(): string|false {
 		$roomId = null;
 		/** @var RoomGetRequest $room */
@@ -106,7 +110,7 @@ class RoomEditView extends PartialPage {
                         <button type="button" class="btn btn-outline-danger remove-image-btn m-3">
                             <span class="dashicons dashicons-no-alt"></span>
                         </button>
-                        <img src="" class="rounded img-thumbnail border-box m-2"
+                        <img alt="room image" src="" class="rounded img-thumbnail border-box m-2"
                              style="height: 200px; width: 200px; object-fit: scale-down;"
 
                         >
@@ -161,6 +165,7 @@ class RoomEditView extends PartialPage {
 				<?php } ?>
                     class="rounded img-thumbnail border-box m-2"
                     style="height: 200px; width: 200px; object-fit: scale-down;"
+                    alt="room image"
                     index="<?= $strIndex ?>" image-id="<?= $strImageId ?>"
             >
         </div>
@@ -226,7 +231,7 @@ class RoomEditView extends PartialPage {
                         })
                 }
 
-                const controller = new FormController(
+                new FormController(
                     "<?= wp_create_nonce( "wp_rest" ) ?>",
                     new FormElementSelectorOptions("<?= self::FORM_ID ?>"),
                     new FormActionRedirectOptions("<?= self::CANCEL_BTN_ID ?>", {
@@ -240,7 +245,7 @@ class RoomEditView extends PartialPage {
                     null,
                     new FormActionRedirectOptions("<?= self::DELETE_BTN_ID ?>", {
                         redirectTo: "<?= MenuHandler::getInstance()->SubMenuRooms->getUrl() ?>",
-                        endpoint: deleteEndpoint
+                        endpoint: deleteEndpoint.toString()
                     }),
                     new AlertFormOptions(""),
                 );
