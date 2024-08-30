@@ -22,14 +22,4 @@ class RoomGetRequest extends DTOBase
      */
     #[DTOPropertyAttribute(self::IMAGE_ARR, DTOPropertyType::Array, [])]
     public const IMAGE_ARR = "Images";
-
-    public static function createDTO(): object
-    {
-        return self::baseCreateDTO(self::class);
-    }
-
-    public static function dtoFromArray(array $array): object
-    {
-        return self::baseDTOFromArray(self::class, $array);
-    }
 }

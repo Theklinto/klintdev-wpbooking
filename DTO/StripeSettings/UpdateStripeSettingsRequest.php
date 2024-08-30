@@ -18,23 +18,5 @@ class UpdateStripeSettingsRequest extends DTOBase
 
     #[DTOPropertyAttribute(self::API_SECRET, DTOPropertyType::String, "")]
     public const API_SECRET = "ApiSecret";
-
-    /**
-     * @throws ReflectionException
-     * @return UpdateStripeSettingsRequest
-     */
-    public static function createDTO(): object
-    {
-        return self::baseCreateDTO(UpdateStripeSettingsRequest::class);
-    }
-
-    /**
-     * @param array $array
-     * @return UpdateStripeSettingsRequest
-     */
-    public static function dtoFromArray(array $array): object
-    {
-        return self::baseDTOFromArray(UpdateStripeSettingsRequest::class, $array);
-    }
 }
 

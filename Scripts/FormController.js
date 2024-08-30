@@ -243,7 +243,7 @@ class FormController {
         }).fail((xhr) => {
             let error = "";
             try {
-                error = JSON.parse(xhr.responseJSON);
+                error = JSON.parse(`"${xhr.responseJSON}"`);
             } catch {
                 error = xhr.responseText
             }
@@ -287,7 +287,13 @@ class FormController {
                 this.onCancel(event);
             }
         }).fail((xhr) => {
-            this.alert?.updateMessage([this.alertOptions?.errorMessage, xhr.responseJSON].join(" "), Alert.Statuses.ERROR);
+            let error = "";
+            try {
+                error = JSON.parse(`"${xhr.responseJSON}"`);
+            } catch {
+                error = xhr.responseText
+            }
+            this.alert?.updateMessage([this.alertOptions?.errorMessage, error].join(" "), Alert.Statuses.ERROR);
             this.enableForm(true);
         });
     }

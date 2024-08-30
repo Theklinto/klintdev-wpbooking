@@ -17,20 +17,4 @@ class RoomListRequest extends DTOBase
     public const DESCRIPTION_STR = "Description";
     #[DTOPropertyAttribute(self::IMAGE_POST_ID_INT, DTOPropertyType::Int, null)]
     public const IMAGE_POST_ID_INT = "ImagePostId";
-
-    /**
-     * @throws ReflectionException
-     */
-    public static function createDTO(): object
-    {
-        return self::baseCreateDTO(self::class);
-    }
-
-    /**
-     * @throws ReflectionException
-     */
-    public static function dtoFromArray(array $array): object
-    {
-        return self::baseDTOFromArray(self::class, $array);
-    }
 }

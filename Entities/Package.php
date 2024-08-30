@@ -1,75 +1,42 @@
 <?php
-//
-//namespace KlintDev\WPBooking\Entities;
-//
-//use KlintDev\WPBooking\Attributes\ColumnAttribute;
-//
-//class Package
-//{
-//    #[ColumnAttribute("id", ColumnAttribute::INTEGER, 0)]
-//    public ?int $id;
-//    #[ColumnAttribute("name", ColumnAttribute::STRING, "")]
-//    public string $name;
-//    #[ColumnAttribute("price", ColumnAttribute::INTEGER, 0)]
-//    public int $price;
-//    #[ColumnAttribute("room_id", ColumnAttribute::INTEGER, 0)]
-//    public int $room_id;
-//    #[ColumnAttribute("deposit", ColumnAttribute::INTEGER, 0)]
-//    public int $deposit;
-//    #[ColumnAttribute("rental_duration_in_hours", ColumnAttribute::INTEGER, 0)]
-//    public int $rental_duration_in_hours;
-//    #[ColumnAttribute("active", ColumnAttribute::INTEGER, 0)]
-//    public bool $active;
-//    #[ColumnAttribute("monday", ColumnAttribute::INTEGER, 0)]
-//    public bool $monday;
-//    #[ColumnAttribute("tuesday", ColumnAttribute::INTEGER, 0)]
-//    public bool $tuesday;
-//    #[ColumnAttribute("wednesday", ColumnAttribute::INTEGER, 0)]
-//    public bool $wednesday;
-//    #[ColumnAttribute("thursday", ColumnAttribute::INTEGER, 0)]
-//    public bool $thursday;
-//    #[ColumnAttribute("friday", ColumnAttribute::INTEGER, 0)]
-//    public bool $friday;
-//    #[ColumnAttribute("saturday", ColumnAttribute::INTEGER, 0)]
-//    public bool $saturday;
-//    #[ColumnAttribute("sunday", ColumnAttribute::INTEGER, 0)]
-//    public bool $sunday;
-//
-//    public static function ToPackageModel($package)
-//    {
-//        $model = new PackageModel();
-//        $model->name = $package->name;
-//        $model->price = $package->price;
-//        $model->roomId = $package->room_id;
-//        $model->deposit = $package->deposit;
-//        $model->rentalDurationInHours = $package->rental_duration_in_hours;
-//        $model->active = $package->active;
-//        $model->monday = $package->monday;
-//        $model->tuesday = $package->tuesday;
-//        $model->wednesday = $package->wednesday;
-//        $model->thursday = $package->thursday;
-//        $model->friday = $package->friday;
-//        $model->saturday = $package->saturday;
-//        $model->sunday = $package->sunday;
-//        return $model;
-//    }
-//
-//    public static function FromPackageModel(PackageModel $model): Package
-//    {
-//        $package = new Package();
-//        $package->name = $model->name;
-//        $package->price = $model->price;
-//        $package->room_id = $model->roomId;
-//        $package->deposit = $model->deposit;
-//        $package->rental_duration_in_hours = $model->rentalDurationInHours;
-//        $package->active = $model->active;
-//        $package->monday = $model->monday;
-//        $package->tuesday = $model->tuesday;
-//        $package->wednesday = $model->wednesday;
-//        $package->thursday = $model->thursday;
-//        $package->friday = $model->friday;
-//        $package->saturday = $model->saturday;
-//        $package->sunday = $model->sunday;
-//        return $package;
-//    }
-//}
+
+namespace KlintDev\WPBooking\Entities;
+
+use AllowDynamicProperties;
+use KlintDev\WPBooking\Attributes\DBColumnAttribute;
+use KlintDev\WPBooking\Attributes\DBTableAttribute;
+
+#[AllowDynamicProperties]
+#[DBTableAttribute( "package", 1 )]
+class Package {
+	#[DBColumnAttribute( self::ID_INT, DBColumnAttribute::INTEGER, "bigint unsigned", null, false, true )]
+	public const ID_INT = "id";
+	#[DBColumnAttribute( self::ACTIVE_BOOL, DBColumnAttribute::INTEGER, "tinyint(1)", null )]
+	public const ACTIVE_BOOL = "active";
+	#[DBColumnAttribute( self::ROOM_ID_INT, DBColumnAttribute::INTEGER, "bigint unsigned", null )]
+	public const ROOM_ID_INT = "room_id";
+	#[DBColumnAttribute( self::NAME_STR, DBColumnAttribute::STRING, "varchar(250)", null )]
+	public const NAME_STR = "name";
+	#[DBColumnAttribute( self::PRICE_FLOAT, DBColumnAttribute::FLOAT, "decimal(8, 2)", null )]
+	public const PRICE_FLOAT = "price";
+	#[DBColumnAttribute( self::DEPOSIT_FLOAT, DBColumnAttribute::FLOAT, "decimal(8, 2)", null )]
+	public const DEPOSIT_FLOAT = "deposit";
+	#[DBColumnAttribute( self::START_TIME_STR, DBColumnAttribute::STRING, "varchar(5)", null )]
+	public const START_TIME_STR = "start_time";
+	#[DBColumnAttribute( self::DURATION_IN_HOURS_INT, DBColumnAttribute::INTEGER, "tinyint(3)", null )]
+	public const DURATION_IN_HOURS_INT = "duration_in_hours";
+	#[DBColumnAttribute( self::MONDAY_BOOL, DBColumnAttribute::INTEGER, "tinyint(1)", null )]
+	public const MONDAY_BOOL = "monday";
+	#[DBColumnAttribute( self::TUESDAY_BOOL, DBColumnAttribute::INTEGER, "tinyint(1)", null )]
+	public const TUESDAY_BOOL = "tuesday";
+	#[DBColumnAttribute( self::WEDNESDAY_BOOL, DBColumnAttribute::INTEGER, "tinyint(1)", null )]
+	public const WEDNESDAY_BOOL = "wednesday";
+	#[DBColumnAttribute( self::THURSDAY_BOOL, DBColumnAttribute::INTEGER, "tinyint(1)", null )]
+	public const THURSDAY_BOOL = "thursday";
+	#[DBColumnAttribute( self::FRIDAY_BOOL, DBColumnAttribute::INTEGER, "tinyint(1)", null )]
+	public const FRIDAY_BOOL = "friday";
+	#[DBColumnAttribute( self::SATURDAY_BOOL, DBColumnAttribute::INTEGER, "tinyint(1)", null )]
+	public const SATURDAY_BOOL = "saturday";
+	#[DBColumnAttribute( self::SUNDURDAY_BOOL, DBColumnAttribute::INTEGER, "tinyint(1)", null )]
+	public const SUNDURDAY_BOOL = "sunday";
+}

@@ -2,8 +2,6 @@
 
 namespace KlintDev\WPBooking\Views;
 
-use KlintDev\WPBooking\GlobalSettings;
-
 abstract class PartialPage
 {
     /**

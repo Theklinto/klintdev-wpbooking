@@ -32,14 +32,4 @@ class BlockedDurationListRequest extends DTOBase
     public const SATURDAY_BOOL = "Saturday";
     #[DTOPropertyAttribute(self::SUNDAY_BOOL, DTOPropertyType::Bool, false)]
     public const SUNDAY_BOOL = "Sunday";
-
-    public static function createDTO(): object
-    {
-        return self::baseCreateDTO(self::class);
-    }
-
-    public static function dtoFromArray(array $array): object
-    {
-        return self::baseDTOFromArray(self::class, $array);
-    }
 }
