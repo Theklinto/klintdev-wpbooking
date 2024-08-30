@@ -3,14 +3,10 @@
 namespace KlintDev\WPBooking\DTO;
 
 use AllowDynamicProperties;
-use DateTime;
-use ErrorException;
-use Exception;
 use InvalidArgumentException;
 use ReflectionClass;
 use ReflectionClassConstant;
 use ReflectionException;
-use WP_REST_Request;
 
 /**
  * @template TTarget
@@ -24,7 +20,7 @@ abstract class DTOBase {
 	public static function createDTO(): static {
 
 		$class = new ReflectionClass( static::class );
-		/** @var $object object */
+		/** @var $object static */
 		$object = $class->newInstanceWithoutConstructor();
 		/** @var $constants array<string, string> */
 		$constants = $class->getconstants();

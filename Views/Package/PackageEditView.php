@@ -17,17 +17,18 @@ use KlintDev\WPBooking\Views\ContentDependency;
 use KlintDev\WPBooking\Views\ContentDependencyLoadingStyle;
 use KlintDev\WPBooking\Views\ContentDependencyType;
 use KlintDev\WPBooking\Views\PartialPage;
+use ReflectionException;
 
 class PackageEditView extends PartialPage {
 
 	protected static self $instance;
 
 	public static function getInstance(): object {
-		if ( ! isset( self::$instance ) ) {
-			self::$instance = new self();
+		if ( ! isset( static::$instance ) ) {
+			static::$instance = new static();
 		}
 
-		return self::$instance;
+		return static::$instance;
 	}
 
 	protected const PREFIX = "package-edit-";
@@ -52,6 +53,9 @@ class PackageEditView extends PartialPage {
 	protected const CANCEL_BTN_ID = self::PREFIX . "cancel-btn";
 	protected const START_TIME_ID = self::PREFIX . "start-time-id";
 
+	/**
+	 * @throws ReflectionException
+	 */
 	public static function render(): string|false {
 		$packageId = $_GET["id"] ?? null;
 		$package   = $packageId ? PackageService::getPackageById( $packageId ) : PackageCreateRequest::createDTO();
@@ -230,7 +234,7 @@ class PackageEditView extends PartialPage {
                 const redirectToUrl = "<?= MenuHandler::getInstance()->SubMenuPackages->getUrl() ?>";
                 deleteEndpoint.searchParams.append("id", packageId);
 
-                const controller = new FormController(
+                new FormController(
                     "<?= wp_create_nonce( "wp_rest" ) ?>",
                     new FormElementSelectorOptions("<?= self::FORM_ID ?>"),
                     new FormActionRedirectOptions("<?= self::CANCEL_BTN_ID ?>", {

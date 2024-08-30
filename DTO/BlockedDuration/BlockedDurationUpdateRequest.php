@@ -6,8 +6,11 @@ use Exception;
 use KlintDev\WPBooking\DTO\DTOBase;
 use KlintDev\WPBooking\DTO\DTOPropertyAttribute;
 use KlintDev\WPBooking\DTO\DTOPropertyType;
+use KlintDev\WPBooking\DTO\DTOValidationTrait;
 
 class BlockedDurationUpdateRequest extends DTOBase {
+	use DTOValidationTrait;
+
     #[DTOPropertyAttribute(self::ID_INT, DTOPropertyType::Int, 0)]
     public const ID_INT = "Id";
     #[DTOPropertyAttribute(self::ACTIVE_BOOL, DTOPropertyType::Bool, false)]
@@ -38,10 +41,10 @@ class BlockedDurationUpdateRequest extends DTOBase {
      */
     public function validate(): void
     {
-        self::validateDate($this,
+	    $this->validateDate(
             self::START_DATE_STR,
             "Start dato skal være angivet!");
-        self::validateString($this,
+	    $this->validateString(
             self::DESCRIPTION_STR,
             "Beskrivelsen skal være mellem 3 og 1000 tegn",
             3,
