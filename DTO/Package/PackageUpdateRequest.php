@@ -69,7 +69,7 @@ class PackageUpdateRequest extends DTOBase {
 		$this->validateStringRegex(
 			self::START_TIME_STR,
 			"Tidspunktet skal være mellem 00:00 og 23:59",
-			Regex::TIMESTAMP
+			self::TIMESTAMP_REGEX
 		);
 		$this->validateInteger(
 			self::ROOM_ID_INT,

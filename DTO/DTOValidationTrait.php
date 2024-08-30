@@ -12,6 +12,13 @@ use KlintDev\WPBooking\Utilities\Regex;
  */
 trait DTOValidationTrait {
 	/**
+	 * Matches a timestamp between 00:00 and 23:59
+	 * @type string
+	 */
+	protected const TIMESTAMP_REGEX = "/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/";
+
+
+	/**
 	 * Validate if the DTO is valid. Thorws an {@see ValidationFailedException} if validation fails.
 	 * Other exceptions are not from validation requirements.
 	 * @return void

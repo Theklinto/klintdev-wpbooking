@@ -8,8 +8,6 @@ use KlintDev\WPBooking\DTO\DTOBase;
 use KlintDev\WPBooking\DTO\DTOPropertyAttribute;
 use KlintDev\WPBooking\DTO\DTOPropertyType;
 use KlintDev\WPBooking\DTO\DTOValidationTrait;
-use KlintDev\WPBooking\Utilities\Regex;
-use ReflectionException;
 
 #[AllowDynamicProperties]
 class PackageCreateRequest extends DTOBase {
@@ -62,7 +60,7 @@ class PackageCreateRequest extends DTOBase {
 		$this->validateStringRegex(
 			self::START_TIME_STR,
 			"Tidspunktet skal være mellem 00:00 og 23:59",
-			Regex::TIMESTAMP
+			self::TIMESTAMP_REGEX
 		);
 		$this->validateInteger(
 			self::ROOM_ID_INT,
