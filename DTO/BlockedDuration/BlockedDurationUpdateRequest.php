@@ -17,7 +17,7 @@ class BlockedDurationUpdateRequest extends DTOBase {
     public const ACTIVE_BOOL = "Active";
     #[DTOPropertyAttribute(self::START_DATE_STR, DTOPropertyType::String, "")]
     public const START_DATE_STR = "StartDate";
-    #[DTOPropertyAttribute(self::END_DATE_STR, DTOPropertyType::String, "")]
+    #[DTOPropertyAttribute(self::END_DATE_STR, DTOPropertyType::String, null, true)]
     public const END_DATE_STR = "EndDate";
     #[DTOPropertyAttribute(self::DESCRIPTION_STR, DTOPropertyType::String, "")]
     public const DESCRIPTION_STR = "Description";

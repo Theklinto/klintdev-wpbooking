@@ -40,6 +40,13 @@ abstract class DTOBase {
 	/**
 	 * @throws ReflectionException
 	 */
+	public function assignValue(string $propertyName, mixed $propertyValue ): bool{
+		return static::assignPropertyValue($this, $propertyName, $propertyValue);
+	}
+
+	/**
+	 * @throws ReflectionException
+	 */
 	public static function assignPropertyValue( object $target, string $propertyName, mixed $propertyValue ): bool {
 		$className = get_class( $target );
 		$class     = new ReflectionClass( $target::class );

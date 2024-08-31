@@ -7,9 +7,10 @@ use Exception;
 
 class Formatter {
 	public static function formatDate( string $date ): string {
-		if ( strlen( $date ) == 0 ) {
+		if ( strlen( $date ) == 0 || $date === '0000-00-00' ) {
 			return '';
 		}
+
 
 		try {
 			$date = new DateTime( $date );
@@ -35,8 +36,10 @@ class Formatter {
 	}
 
 	public static function formatCurrency( int|float $amount ): string {
-		$text = number_format( $amount, 2, ',', '.' );
+		return self::formatNumber( $amount ) . "DKK";
+	}
 
-		return $text . " DKK";
+	public static function formatNumber( int|float $number ): string {
+		return number_format( $number, 2, ',', '.' );
 	}
 }

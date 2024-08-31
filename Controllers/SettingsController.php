@@ -4,6 +4,7 @@ namespace KlintDev\WPBooking\Controllers;
 
 use Exception;
 use KlintDev\WPBooking\Attributes\RouteAttribute;
+use KlintDev\WPBooking\DTO\Deposit\UpdateDepositSettingsRequest;
 use KlintDev\WPBooking\DTO\StripeSettings\UpdateStripeSettingsRequest;
 use KlintDev\WPBooking\Interfaces\IController;
 use KlintDev\WPBooking\Services\OptionService;
@@ -15,14 +16,14 @@ use WP_REST_Server;
 class SettingsController extends ControllerBase implements IController {
 	public const CONTROLLER_PREFIX = "settings";
 	public const UPDATE_STRIPE_SETTINGS_ENDPOINT = "stripe/update";
-	public const GET_STRIPE_SETTINGS_ENDPOINT = "stripe/settings";
+	public const UPDATE_DEPOSIT_ENDPOINT = "deposit/update";
 
 
 	#[RouteAttribute( self::UPDATE_STRIPE_SETTINGS_ENDPOINT, WP_REST_Server::EDITABLE, true )]
 	public function updateStripeSettings( WP_REST_Request $request ): WP_REST_Response {
 		try {
 
-			$result = $request->get_body_params();
+			$result = $request->get_json_params();
 			$dto    = UpdateStripeSettingsRequest::dtoFromArray( $result );
 
 			$previousKey    = OptionService::stripeApiKey();
@@ -55,22 +56,19 @@ class SettingsController extends ControllerBase implements IController {
 		}
 	}
 
-//    #[RouteAttribute(self::GET_STRIPE_SETTINGS_ENDPOINT, WP_REST_Server::READABLE, true)]
-//    public function getStripeSettings(WP_REST_Request $request): WP_REST_Response
-//    {
-//        try {
-//
-//            $dto = GetStripeSettingsRequest::createDTO();
-//
-//            $dto::assignPropertyValue($dto, $dto::API_KEY, get_option(self::API_KEY_OPTION));
-//            $dto::assignPropertyValue($dto, $dto::API_SECRET, get_option(self::API_SECRET_OPTION));
-//
-//            return new WP_REST_Response($dto, 200);
-//        } catch (Exception $exception) {
-//            return new WP_REST_Response($exception->getMessage(), 500);
-//        }
-//
-//    }
+	#[RouteAttribute( self::UPDATE_DEPOSIT_ENDPOINT, WP_REST_Server::EDITABLE, true )]
+	public function updateDeposit( WP_REST_Request $request ): WP_REST_Response {
+		try {
+			$params = $request->get_json_params();
+			$dto    = UpdateDepositSettingsRequest::dtoFromArray( $params );
+
+			OptionService::updateDepositSettings( $dto );
+
+			return new WP_REST_Response( [], 200 );
+		} catch ( Exception $exception ) {
+			return new WP_REST_Response( $exception->getMessage(), 500 );
+		}
+	}
 
 	public static function getEndpointUrl( string $method, array $queryParams = [] ): string {
 		return self::baseGetEndpointUrl( self::CONTROLLER_PREFIX, $method );

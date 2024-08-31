@@ -16,7 +16,7 @@ class ObjectParser {
      *
      * @param elementId {string}
      * @param targetType {"string"|"number"|"bool"|undefined}
-     * @return {string|number|bool|undefined}
+     * @return {string|number|boolean|undefined}
      */
     static getValue(elementId, targetType = undefined) {
         const selector = jQuery(`#${elementId}`);
@@ -26,6 +26,11 @@ class ObjectParser {
             val = selector.is(":checked");
         } else if (selector.is('[type="number"]')) {
             val = +selector.val();
+        } else if (selector.is('[type="date"]')) {
+            val = selector.val();
+            if(!val){
+                val = null;
+            }
         } else {
             val = selector.val();
         }
