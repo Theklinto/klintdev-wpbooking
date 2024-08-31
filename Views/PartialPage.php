@@ -2,6 +2,8 @@
 
 namespace KlintDev\WPBooking\Views;
 
+use Exception;
+
 abstract class PartialPage
 {
     /**
@@ -9,6 +11,10 @@ abstract class PartialPage
      */
     abstract public static function getInstance(): object;
 
+	/**
+	 * @return string|false
+	 * @throws Exception
+	 */
     abstract public static function render(): string|false;
 
     /** @return ContentDependency[] */

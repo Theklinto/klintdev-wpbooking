@@ -19,7 +19,7 @@ class EntityFilter
     public function setPlaceholder(string $placeholderType): void
     {
         $this->placeholderType = $placeholderType;
-        $this->queryPlaceholderString = "{$this->columnName} {$this->comparisonType->value} {$placeholderType}";
+        $this->queryPlaceholderString = "$this->columnName {$this->comparisonType->value} $placeholderType";
     }
 
     public function getQueryPlaceholderString(): string

@@ -3,7 +3,6 @@
 namespace KlintDev\WPBooking\Controllers;
 
 use KlintDev\WPBooking\GlobalSettings;
-use KlintDev\WPBooking\Interfaces\IController;
 
 abstract class ControllerBase
 {

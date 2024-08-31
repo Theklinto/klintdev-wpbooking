@@ -10,7 +10,6 @@ use KlintDev\WPBooking\DTO\BlockedDuration\BlockedDurationCreateRequest;
 use KlintDev\WPBooking\DTO\BlockedDuration\BlockedDurationUpdateRequest;
 use KlintDev\WPBooking\DTO\BlockedDuration\BlockedDurationGetRequest;
 use KlintDev\WPBooking\DTO\BlockedDuration\BlockedDurationListRequest;
-use KlintDev\WPBooking\DTO\DTOBase;
 use KlintDev\WPBooking\Entities\BlockedDuration;
 use ReflectionException;
 
@@ -71,11 +70,13 @@ class BlockedDurationService
         return $dtos;
     }
 
-    /**
-     * @param int $id
-     * @return BlockedDurationGetRequest
-     * @throws ReflectionException
-     */
+	/**
+	 * @param int $id
+	 *
+	 * @return BlockedDurationGetRequest
+	 * @throws ReflectionException
+	 * @throws Exception
+	 */
     public static function getBlockedDuration(int $id): object
     {
         $results = DBHandler::getEntitiesBy(BlockedDuration::class, [], [new EntityFilter(BlockedDuration::ID_INT, QueryComparisonType::EQUAL, $id)]);

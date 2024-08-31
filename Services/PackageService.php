@@ -97,7 +97,6 @@ class PackageService {
 			)
 		] );
 
-		$package = null;
 		if ( ! isset( $results[0] ) ) {
 			return null;
 		}

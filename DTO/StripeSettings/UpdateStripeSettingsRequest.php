@@ -2,11 +2,9 @@
 
 namespace KlintDev\WPBooking\DTO\StripeSettings;
 
-use Attribute;
 use KlintDev\WPBooking\DTO\DTOBase;
 use KlintDev\WPBooking\DTO\DTOPropertyAttribute;
 use KlintDev\WPBooking\DTO\DTOPropertyType;
-use ReflectionException;
 
 /**
  * @implements UpdateStripeSettingsRequest

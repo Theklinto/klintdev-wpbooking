@@ -2,6 +2,7 @@
 
 namespace KlintDev\WPBooking;
 
+use Exception;
 use KlintDev\WPBooking\Logging\Logger;
 use KlintDev\WPBooking\Views\ContentDependency;
 use KlintDev\WPBooking\Views\ContentDependencyLoadingStyle;
@@ -16,14 +17,10 @@ use KlintDev\WPBooking\Views\Settings\SettingsOverviewView;
 
 class MenuHandler {
 	public MenuPage $MenuParentItem;
-	public MenuPage $SubMenuOverview;
-
 	public MenuPage $SubMenuRooms;
 	public MenuPage $HiddenMenuRoomsEdit;
-
 	public MenuPage $SubMenuPackages;
 	public MenuPage $HiddenMenuPackageEdit;
-
 	public MenuPage $SubMenuSettings;
 	public MenuPage $HiddenEditBlockedDuration;
 
@@ -186,7 +183,7 @@ class MenuPage {
 		}
 
 		wp_register_script( ContentDependency::INLINE_SCRIPT_HANDLE, false, $inlineScriptsDependencies );
-		$result = wp_add_inline_script( ContentDependency::INLINE_SCRIPT_HANDLE, $inlineScripts );
+		wp_add_inline_script( ContentDependency::INLINE_SCRIPT_HANDLE, $inlineScripts );
 		wp_enqueue_script( ContentDependency::INLINE_SCRIPT_HANDLE );
 	}
 
@@ -223,7 +220,7 @@ class MenuPage {
 				$this->Title,
 				GlobalSettings::PLUGIN_CAPABILITY,
 				$this->Slug,
-				fn() => print $this->Page::render(),
+				fn() => $this->renderPage($this->Page),
 			);
 		} else {
 			add_menu_page(
@@ -231,9 +228,22 @@ class MenuPage {
 				$this->Title,
 				GlobalSettings::PLUGIN_CAPABILITY,
 				$this->Slug,
-				fn() => print $this->Page::render(),
+				fn() => $this->renderPage( $this->Page ),
 				$this->DashIcon
 			);
+		}
+	}
+
+	public function renderPage( PartialPage $page ): void {
+		try {
+			echo $page->render();
+		} catch ( Exception $exception ) {
+			Logger::log_error( "Failed to load page", [
+				"page"      => $page::class,
+				"exception" => $exception
+			] );
+
+			echo "Der skete en fejl, siden kunne ikke indlæses!";
 		}
 	}
 
