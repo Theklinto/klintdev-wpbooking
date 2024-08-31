@@ -12,6 +12,7 @@ use KlintDev\WPBooking\Views\ContentDependency;
 use KlintDev\WPBooking\Views\ContentDependencyLoadingStyle;
 use KlintDev\WPBooking\Views\ContentDependencyType;
 use KlintDev\WPBooking\Views\PartialPage;
+use ReflectionException;
 
 class RoomListView extends PartialPage
 {
@@ -28,7 +29,10 @@ class RoomListView extends PartialPage
     protected const PREFIX = "room-list-";
     protected const ADD_BTN_ID = self::PREFIX . "add";
 
-    public static function render(): string|false
+	/**
+	 * @throws ReflectionException
+	 */
+	public static function render(): string|false
     {
         ob_start();
 
@@ -62,6 +66,7 @@ class RoomListView extends PartialPage
                             <tr>
                                 <td>
                                     <img
+                                            alt="room image"
                                             style="max-height: 200px; max-width: 200px; object-fit: scale-down;"
                                             src="<?= wp_get_attachment_image_url($room->getPropertyValue(RoomListRequest::IMAGE_POST_ID_INT)) ?>"
                                     >

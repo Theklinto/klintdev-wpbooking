@@ -3,7 +3,6 @@
 namespace KlintDev\WPBooking\Views\Settings;
 
 use KlintDev\WPBooking\Components\Container;
-use KlintDev\WPBooking\Components\Form;
 use KlintDev\WPBooking\Components\Formatter;
 use KlintDev\WPBooking\DTO\BlockedDuration\BlockedDurationListRequest;
 use KlintDev\WPBooking\MenuHandler;
@@ -12,12 +11,16 @@ use KlintDev\WPBooking\Views\ContentDependency;
 use KlintDev\WPBooking\Views\ContentDependencyLoadingStyle;
 use KlintDev\WPBooking\Views\ContentDependencyType;
 use KlintDev\WPBooking\Views\PartialPage;
+use ReflectionException;
 
 class BlockedDurationListView extends PartialPage
 {
     protected const ADD_BTN_ID = "add-blocked-duration-btn";
 
-    public static function render(): string|false
+	/**
+	 * @throws ReflectionException
+	 */
+	public static function render(): string|false
     {
         ob_start();
 

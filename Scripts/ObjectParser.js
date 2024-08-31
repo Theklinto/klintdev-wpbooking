@@ -32,7 +32,7 @@ class ObjectParser {
 
         switch (targetType) {
             case "bool": {
-                return (true && val);
+                return !!val;
             }
             case "number": {
                 return +val;

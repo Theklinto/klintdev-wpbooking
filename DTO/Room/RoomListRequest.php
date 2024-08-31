@@ -5,7 +5,6 @@ namespace KlintDev\WPBooking\DTO\Room;
 use KlintDev\WPBooking\DTO\DTOBase;
 use KlintDev\WPBooking\DTO\DTOPropertyAttribute;
 use KlintDev\WPBooking\DTO\DTOPropertyType;
-use ReflectionException;
 
 class RoomListRequest extends DTOBase
 {

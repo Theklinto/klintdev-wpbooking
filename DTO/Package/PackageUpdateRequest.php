@@ -8,8 +8,6 @@ use KlintDev\WPBooking\DTO\DTOBase;
 use KlintDev\WPBooking\DTO\DTOPropertyAttribute;
 use KlintDev\WPBooking\DTO\DTOPropertyType;
 use KlintDev\WPBooking\DTO\DTOValidationTrait;
-use KlintDev\WPBooking\Utilities\Regex;
-use ReflectionException;
 
 #[AllowDynamicProperties]
 class PackageUpdateRequest extends DTOBase {

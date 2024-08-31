@@ -5,7 +5,6 @@ namespace KlintDev\WPBooking\DTO;
 use DateTime;
 use Exception;
 use KlintDev\WPBooking\Exceptions\ValidationFailedException;
-use KlintDev\WPBooking\Utilities\Regex;
 
 /**
  * Set of common validation functions. Use this trait on DTO's that requires validation.
@@ -30,7 +29,7 @@ trait DTOValidationTrait {
 	 * @throws ValidationFailedException
 	 * @throws Exception
 	 */
-	protected function validateDate(string $propertyName, string $errorMessage ): void {
+	protected function validateDate( string $propertyName, string $errorMessage ): void {
 		$value = $this->getPropertyValue( $propertyName );
 		try {
 			if ( strlen( $value ) == 0 ) {
@@ -38,7 +37,7 @@ trait DTOValidationTrait {
 			}
 
 			new DateTime( $value );
-		} catch ( Exception $e ) {
+		} catch ( Exception ) {
 			throw new Exception( $errorMessage );
 		}
 	}

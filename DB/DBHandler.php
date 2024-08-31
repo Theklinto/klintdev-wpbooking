@@ -11,16 +11,14 @@ use KlintDev\WPBooking\Entities\BlockedDuration;
 use KlintDev\WPBooking\Entities\Package;
 use KlintDev\WPBooking\Entities\Room;
 use KlintDev\WPBooking\Entities\RoomImage;
+use KlintDev\WPBooking\Logging\Logger;
 use KlintDev\WPBooking\Services\ObjectMapper;
 use ReflectionClass;
 use ReflectionException;
 
 class DBHandler {
 	//<editor-fold desc="Create tables">
-	/**
-	 * @throws ReflectionException
-	 * @throws Exception
-	 */
+
 	public static function createTables(): void {
 		global $wpdb;
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
@@ -32,19 +30,29 @@ class DBHandler {
 			Package::class,
 		];
 
+		Logger::log_info( "Creating required database tables", $entities );
+
 		foreach ( $entities as $entity ) {
-			$table            = self::getTableDefinition( $entity );
-			$createTableQuery = self::getCreateTableString( $entity );
+			try {
 
-			$result = dbDelta( $createTableQuery );
+				$table            = self::getTableDefinition( $entity );
+				$createTableQuery = self::getCreateTableString( $entity );
 
-			$tableName   = $table->getPrefixedTableName();
-			$tableResult = $wpdb->get_var( "SHOW TABLES LIKE '$tableName'" );
-			if ( $tableResult != $tableName ) {
-				throw new Exception( "Table '$tableName' was not created!\n" . join( "\n ", $result ) );
+				$result = dbDelta( $createTableQuery );
+
+				$tableName   = $table->getPrefixedTableName();
+				$tableResult = $wpdb->get_var( "SHOW TABLES LIKE '$tableName'" );
+				if ( $tableResult != $tableName ) {
+					throw new Exception( "Table '$tableName' was not created!\n" . join( "\n ", $result ) );
+				}
+
+				update_option( "db_version_$tableName", $createTableQuery );
+			} catch ( Exception $e ) {
+				Logger::log_error( "Error occured during table creation", [
+					"Entity" => $entity,
+					"Error"  => $e->getMessage()
+				] );
 			}
-
-			update_option( "db_version_$tableName", $createTableQuery );
 		}
 	}
 
@@ -53,7 +61,7 @@ class DBHandler {
 	 */
 	protected static function getCreateTableString( string $className ): string {
 		global $wpdb;
-		$createTableString = "CREATE TABLE %s ( %s, %s ) collate {$wpdb->collate}";
+		$createTableString = "CREATE TABLE %s ( %s, %s ) collate $wpdb->collate";
 
 		/** @var $dbTable DBTableAttribute */
 		$dbTable   = self::getTableDefinition( $className );
@@ -66,7 +74,7 @@ class DBHandler {
 		/** @var $properties array<string, DBColumnAttribute> */
 		$properties = self::getColumnDefinitions( $className );
 
-		foreach ( $properties as $entityString => $columnAttribute ) {
+		foreach ( $properties as $columnAttribute ) {
 
 			$columnDefinition = [
 				$columnAttribute->ColumnName,
@@ -74,11 +82,11 @@ class DBHandler {
 				$columnAttribute->Nullable ? "NULL" : "NOT NULL"
 			];
 			if ( isset( $columnAttribute->DefaultValue ) ) {
-				$columnDefinition[] = "DEFAULT '{$columnAttribute->DefaultValue}'";
+				$columnDefinition[] = "DEFAULT '$columnAttribute->DefaultValue'";
 			}
 			if ( $columnAttribute->PrimaryKey ) {
 				$columnDefinition[]   = "AUTO_INCREMENT";
-				$primaryKeyDefinition = "PRIMARY KEY  ({$columnAttribute->ColumnName})";
+				$primaryKeyDefinition = "PRIMARY KEY  ($columnAttribute->ColumnName)";
 			}
 
 			$columnStrings[] = join( " ", $columnDefinition );
@@ -120,7 +128,6 @@ class DBHandler {
 
 		$filtersWithPlaceholderString = join( ", ", $filtersWithPlaceholder );
 
-		$query = "";
 		if ( count( $arguments ) > 0 ) {
 			$selectString = sprintf(
 				"SELECT %s FROM %s WHERE %s",
@@ -145,7 +152,7 @@ class DBHandler {
 
 		/** @var $results object[] */
 		$results = [];
-		foreach ( $rows as $index => $row ) {
+		foreach ( $rows as $row ) {
 			$results[] = self::mapRowToObject( $entityClass, $row );
 		}
 
@@ -217,6 +224,7 @@ class DBHandler {
 	 *
 	 * @return int Inserted id
 	 * @throws ReflectionException
+	 * @throws Exception
 	 */
 	public static function insertEntity( string $entityClass, array|object $entity ): int {
 		global $wpdb;
@@ -228,8 +236,8 @@ class DBHandler {
 
 		/** @var $dataArray array<string, mixed> */
 		$dataArray = [];
-		/** @var $dataTypes array<string> */
-		$whereTypes = [];
+		/** @var string[] $dataTypes */
+		$dataTypes = [];
 
 		foreach ( $columns as $entityConstant => $columnDefinition ) {
 			if ( ! isset( $entity[ $entityConstant ] ) ) {
@@ -289,7 +297,7 @@ class DBHandler {
 			$templateArray,
 		);
 
-		if ($result === false) {
+		if ( $result === false ) {
 			throw new Exception( "An error occured during delete $wpdb->error" );
 		}
 	}
@@ -601,7 +609,7 @@ class DBHandler {
 		$reflectedClass  = new ReflectionClass( $className );
 		$classAttributes = $reflectedClass->getAttributes( DBTableAttribute::class );
 		if ( count( $classAttributes ) === 0 ) {
-			throw new Exception( "Class {$className} does not have a DBTableAttribute" );
+			throw new Exception( "Class $className does not have a DBTableAttribute" );
 		}
 
 		return $classAttributes[0]->newInstance();

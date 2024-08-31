@@ -16,6 +16,7 @@ use KlintDev\WPBooking\Views\ContentDependency;
 use KlintDev\WPBooking\Views\ContentDependencyLoadingStyle;
 use KlintDev\WPBooking\Views\ContentDependencyType;
 use KlintDev\WPBooking\Views\PartialPage;
+use ReflectionException;
 
 class EditBlockedDurationView extends PartialPage
 {
@@ -49,7 +50,10 @@ class EditBlockedDurationView extends PartialPage
         return self::$instance;
     }
 
-    public static function render(): string|false
+	/**
+	 * @throws ReflectionException
+	 */
+	public static function render(): string|false
     {
         if (isset($_GET["id"])) {
             self::$blocked_duration_id = $_GET["id"];

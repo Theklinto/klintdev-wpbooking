@@ -2,14 +2,12 @@
 
 namespace KlintDev\WPBooking\Controllers;
 
-use Cassandra\Exception\ValidationException;
 use Exception;
 use KlintDev\WPBooking\Attributes\RouteAttribute;
 use KlintDev\WPBooking\DTO\Room\RoomCreateRequest;
 use KlintDev\WPBooking\DTO\Room\RoomUpdateRequest;
 use KlintDev\WPBooking\Interfaces\IController;
 use KlintDev\WPBooking\Services\RoomService;
-use Throwable;
 use WP_REST_Response;
 use WP_REST_Request;
 use WP_REST_Server;
