@@ -19,8 +19,6 @@ class Package {
 	public const NAME_STR = "name";
 	#[DBColumnAttribute( self::PRICE_FLOAT, DBColumnAttribute::FLOAT, "decimal(8, 2)", null )]
 	public const PRICE_FLOAT = "price";
-	#[DBColumnAttribute( self::DEPOSIT_FLOAT, DBColumnAttribute::FLOAT, "decimal(8, 2)", null )]
-	public const DEPOSIT_FLOAT = "deposit";
 	#[DBColumnAttribute( self::START_TIME_STR, DBColumnAttribute::STRING, "varchar(5)", null )]
 	public const START_TIME_STR = "start_time";
 	#[DBColumnAttribute( self::DURATION_IN_HOURS_INT, DBColumnAttribute::INTEGER, "tinyint(3)", null )]

@@ -57,7 +57,6 @@ class PackageListView extends PartialPage {
                             <th style="width: 30%;">Lokale</th>
                             <th style="width: 10%;">Varighed</th>
                             <th style="width: 10%;">Pris</th>
-                            <th style="width: 10%;">Depositum</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -69,7 +68,6 @@ class PackageListView extends PartialPage {
                                 <td><?= $package->getPropertyValue( PackageListRequest::ROOM_NAME ) ?></td>
                                 <td><?= $package->getPropertyValue( PackageListRequest::DURATION_IN_HOURS_INT ) . " t" ?></td>
                                 <td><?= $package->getPropertyValue( PackageListRequest::PRICE_FLOAT ) ?></td>
-                                <td><?= $package->getPropertyValue( PackageListRequest::DEPOSIT_FLOAT ) ?></td>
 								<?= Table::editButton(
 									MenuHandler::getInstance()->HiddenMenuPackageEdit->getUrl( [
 										"id" => $package->getPropertyValue( PackageListRequest::ID_INT )

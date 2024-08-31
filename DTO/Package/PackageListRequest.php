@@ -19,8 +19,6 @@ class PackageListRequest extends DTOBase {
 	public const NAME_STR = "Name";
 	#[DTOPropertyAttribute( self::PRICE_FLOAT, DTOPropertyType::Float, null )]
 	public const PRICE_FLOAT = "Price";
-	#[DTOPropertyAttribute( self::DEPOSIT_FLOAT, DTOPropertyType::Float, null )]
-	public const DEPOSIT_FLOAT = "Deposit";
 	#[DTOPropertyAttribute( self::DURATION_IN_HOURS_INT, DTOPropertyType::Int, null )]
 	public const DURATION_IN_HOURS_INT = "DurationInHours";
 }

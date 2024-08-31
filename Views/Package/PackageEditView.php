@@ -123,18 +123,6 @@ class PackageEditView extends PartialPage {
 								"number"
 							) ?>
                         </div>
-                        <div class="col-6">
-							<?= Input::text(
-								self::DEPOSIT_INPUT_ID,
-								"Depositum",
-								$package->getPropertyValue( PackageGetRequest::DEPOSIT_FLOAT ),
-								null,
-								null,
-								null,
-								null,
-								"number"
-							) ?>
-                        </div>
                     </div>
                     <div class="row">
                         <div class="col-6">
@@ -260,7 +248,6 @@ class PackageEditView extends PartialPage {
 	                    <?= PackageCreateRequest::NAME_STR ?>: ObjectParser.getValue("<?= self::NAME_INPUT_ID ?>"),
 	                    <?= PackageCreateRequest::ROOM_ID_INT ?>: ObjectParser.getValue("<?= self::ROOM_INPUT_ID ?>", "number"),
 	                    <?= PackageCreateRequest::PRICE_FLOAT ?>: ObjectParser.getValue("<?= self::PRICE_INPUT_ID ?>"),
-	                    <?= PackageCreateRequest::DEPOSIT_FLOAT ?>: ObjectParser.getValue("<?= self::DEPOSIT_INPUT_ID ?>"),
 	                    <?= PackageCreateRequest::START_TIME_STR ?>: ObjectParser.getValue("<?= self::START_TIME_ID ?>"),
 	                    <?= PackageCreateRequest::DURATION_IN_HOURS_INT ?>: ObjectParser.getValue("<?= self::DURATION_INPUT_ID ?>"),
 	                    <?= PackageCreateRequest::MONDAY_BOOL ?>: ObjectParser.getValue("<?= self::MONDAY_ACTIVE_ID ?>"),
@@ -280,7 +267,6 @@ class PackageEditView extends PartialPage {
 						<?= PackageCreateRequest::NAME_STR ?>: ObjectParser.getValue("<?= self::NAME_INPUT_ID ?>"),
 						<?= PackageCreateRequest::ROOM_ID_INT ?>: ObjectParser.getValue("<?= self::ROOM_INPUT_ID ?>", "number"),
 						<?= PackageCreateRequest::PRICE_FLOAT ?>: ObjectParser.getValue("<?= self::PRICE_INPUT_ID ?>"),
-						<?= PackageCreateRequest::DEPOSIT_FLOAT ?>: ObjectParser.getValue("<?= self::DEPOSIT_INPUT_ID ?>"),
 						<?= PackageCreateRequest::START_TIME_STR ?>: ObjectParser.getValue("<?= self::START_TIME_ID ?>"),
 						<?= PackageCreateRequest::DURATION_IN_HOURS_INT ?>: ObjectParser.getValue("<?= self::DURATION_INPUT_ID ?>"),
 						<?= PackageCreateRequest::MONDAY_BOOL ?>: ObjectParser.getValue("<?= self::MONDAY_ACTIVE_ID ?>"),

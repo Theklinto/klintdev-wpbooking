@@ -315,7 +315,6 @@ class DBHandler {
 			"p." . Package::NAME_STR,
 			"p." . Package::PRICE_FLOAT,
 			"p." . Package::ACTIVE_BOOL,
-			"p." . Package::DEPOSIT_FLOAT,
 			"p." . Package::DURATION_IN_HOURS_INT,
 			"r." . Room::NAME_STR . " " . PackageListRequest::ROOM_NAME
 		] );
@@ -340,7 +339,6 @@ class DBHandler {
 				Package::NAME_STR              => PackageListRequest::NAME_STR,
 				Package::PRICE_FLOAT           => PackageListRequest::PRICE_FLOAT,
 				Package::ACTIVE_BOOL           => PackageListRequest::ACTIVE_BOOL,
-				Package::DEPOSIT_FLOAT         => PackageListRequest::DEPOSIT_FLOAT,
 				Package::DURATION_IN_HOURS_INT => PackageListRequest::DURATION_IN_HOURS_INT,
 				PackageListRequest::ROOM_NAME  => PackageListRequest::ROOM_NAME,
 			] );
