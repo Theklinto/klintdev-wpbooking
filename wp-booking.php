@@ -9,6 +9,8 @@ namespace KlintDev\WPBooking;
 
 use KlintDev\WPBooking\Controllers\ControllerInitializer;
 use KlintDev\WPBooking\DB\DBHandler;
+use KlintDev\WPBooking\Logging\Logger;
+use KlintDev\WPBooking\Logging\LoggingLevel;
 use KlintDev\WPBooking\Scripts\ScriptCollection;
 
 define("KDWPB_PATH", plugin_dir_path(__FILE__));
@@ -29,6 +31,9 @@ add_action("admin_enqueue_scripts", function () {
 
 register_activation_hook(__FILE__, function () {
     GlobalSettings::registerCapabilities();
+	Logger::setup(
+		LoggingLevel::DEBUG
+	);
 
     DBHandler::createTables();
 });

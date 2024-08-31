@@ -2,6 +2,7 @@
 
 namespace KlintDev\WPBooking;
 
+use KlintDev\WPBooking\Logging\Logger;
 use KlintDev\WPBooking\Views\ContentDependency;
 use KlintDev\WPBooking\Views\ContentDependencyLoadingStyle;
 use KlintDev\WPBooking\Views\ContentDependencyType;
@@ -112,7 +113,7 @@ class MenuHandler {
 			$this->SubMenuRooms,
 			$this->SubMenuPackages,
 			$this->HiddenMenuRoomsEdit,
-            $this->HiddenMenuPackageEdit,
+			$this->HiddenMenuPackageEdit,
 		];
 	}
 
@@ -120,6 +121,7 @@ class MenuHandler {
 		foreach ( $this::$menus as $menu ) {
 			$menu->register_menu();
 		}
+		Logger::log_info( "Menus registered", [ "count" => count( $this::$menus ) ] );
 	}
 
 	public function enqueueContent(): void {
