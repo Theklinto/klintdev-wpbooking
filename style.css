@@ -39,3 +39,12 @@ input[type="checkbox"] {
     border: 0;
     position: absolute;
 }
+
+table td.table-edit-btn{
+    text-align: center;
+    vertical-align: middle;
+}
+
+table td.table-edit-btn a{
+    border: 0;
+}

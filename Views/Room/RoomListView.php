@@ -4,6 +4,7 @@ namespace KlintDev\WPBooking\Views\Room;
 
 use KlintDev\WPBooking\Components\Container;
 use KlintDev\WPBooking\Components\Formatter;
+use KlintDev\WPBooking\Components\Table;
 use KlintDev\WPBooking\DTO\Room\RoomGetRequest;
 use KlintDev\WPBooking\DTO\Room\RoomListRequest;
 use KlintDev\WPBooking\MenuHandler;
@@ -74,16 +75,14 @@ class RoomListView extends PartialPage {
                                 </td>
                                 <td><?= $room->getPropertyValue( RoomListRequest::NAME_STR ) ?></td>
                                 <td><?= Formatter::maxLengthText( $room->getPropertyValue( RoomListRequest::DESCRIPTION_STR ), 100 ) ?></td>
-                                <td style="text-align: center; vertical-align: middle">
-                                    <a
-                                            href="<?= MenuHandler::getInstance()->HiddenMenuRoomsEdit->getUrl( [ "id" => $room->getPropertyValue( RoomListRequest::ID_INT ) ] ) ?>"
-                                            class="btn btn-outline-primary"
-                                            style="border: 0">
-                                        <span class="dashicons dashicons-edit-large"></span>
-                                    </a>
-                                </td>
+								<?= Table::editButton(
+									MenuHandler::getInstance()->HiddenMenuRoomsEdit->getUrl( [
+										"id" => $room->getPropertyValue( RoomListRequest::ID_INT )
+									] )
+								) ?>
                             </tr>
 						<?php } ?>
+						<?= Table::noRowsText( "Der er ingen lokaler", $rooms ) ?>
                         </tbody>
                     </table>
 					<?= Container::endDashboardContainer(); ?>

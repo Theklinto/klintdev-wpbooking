@@ -11,6 +11,7 @@ use KlintDev\WPBooking\DTO\Room\RoomCreateRequest;
 use KlintDev\WPBooking\DTO\Room\RoomGetRequest;
 use KlintDev\WPBooking\DTO\Room\RoomListRequest;
 use KlintDev\WPBooking\DTO\Room\RoomUpdateRequest;
+use KlintDev\WPBooking\Entities\Package;
 use KlintDev\WPBooking\Entities\Room;
 use KlintDev\WPBooking\Entities\RoomImage;
 use ReflectionException;
@@ -93,6 +94,18 @@ class RoomService {
 	 */
 	public static function deleteRoom( int $roomId ): void {
 		try {
+
+			$packages = DBHandler::getEntitiesBy( Package::class, [ Package::ID_INT ], [
+				new EntityFilter(
+					Package::ROOM_ID_INT,
+					QueryComparisonType::EQUAL,
+					$roomId
+				)
+			] );
+			if ( ! empty( $packages ) ) {
+				throw new Exception( "Slet lokalets pakker før du kan slette lokalet" );
+			}
+
 			DBHandler::startTransaction();
 
 			DBHandler::deleteEntity( RoomImage::class, [

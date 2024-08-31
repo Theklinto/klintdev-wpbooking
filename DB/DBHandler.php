@@ -525,21 +525,21 @@ class DBHandler {
 	static function getColumnSelector(
 		string $entityClass, array $includeColumns
 	): string {
-		$columnSelector = "*";
-		if ( count( $includeColumns ) > 0 ) {
-			/** @var $columnDefinitions array<string, DBColumnAttribute> */
-			$columnDefinitions = self::getColumnDefinitions( $entityClass );
-			foreach ( $includeColumns as $includeColumn ) {
-				if ( isset( $columnDefinitions[ $includeColumn ] ) ) {
-					$columnSelector = join( ", ", [
-						$columnSelector,
-						$columnDefinitions[ $includeColumn ]->ColumnName
-					] );
-				}
+
+		if ( empty( $includeColumns ) ) {
+			return "*";
+		}
+
+		$columnSelector = [];
+		/** @var $columnDefinitions array<string, DBColumnAttribute> */
+		$columnDefinitions = self::getColumnDefinitions( $entityClass );
+		foreach ( $includeColumns as $includeColumn ) {
+			if ( isset( $columnDefinitions[ $includeColumn ] ) ) {
+				$columnSelector[] = $columnDefinitions[ $includeColumn ]->ColumnName;
 			}
 		}
 
-		return $columnSelector;
+		return join( ", ", $columnSelector );
 	}
 
 	/**
